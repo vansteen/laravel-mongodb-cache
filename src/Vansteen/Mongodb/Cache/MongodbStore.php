@@ -93,7 +93,7 @@ class MongodbStore implements StoreInterface {
 		// All of the cached values in the database are encrypted in case this is used
 		// as a session data store by the consumer. We'll also calculate the expire
 		// time and place that on the table so we will check it on our retrieval.
-		//$value = $this->encrypter->encrypt($value);
+		$value = $this->encrypter->encrypt($value);
 
 		$expiration = new \MongoDate($this->getTime() + ($minutes * 60));
 
