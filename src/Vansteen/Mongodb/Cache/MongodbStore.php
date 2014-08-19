@@ -25,7 +25,7 @@ class MongodbStore implements StoreInterface {
 	 *
 	 * @var string
 	 */
-	protected $collection;
+	protected $collection_name;
 
 	/**
 	 * A string that should be prepended to keys.
@@ -43,12 +43,12 @@ class MongodbStore implements StoreInterface {
 	 * @param  string  $prefix
 	 * @return void
 	 */
-	public function __construct(Connection $connection, Encrypter $encrypter, $collection, $prefix = '')
+	public function __construct(Connection $connection, Encrypter $encrypter, $collection_name, $prefix = '')
 	{
-		$this->collection = $collection;
-		$this->prefix = $prefix;
-		$this->encrypter = $encrypter;
 		$this->connection = $connection;
+		$this->encrypter = $encrypter;
+		$this->collection_name = $collection_name;
+		$this->prefix = $prefix;
 	}
 
 	/**
@@ -61,7 +61,7 @@ class MongodbStore implements StoreInterface {
 	{
 		$key = $this->prefix . $key;
 
-		$cache = $this->collection()->where('key', $key)->first();
+		$cache = $this->getCacheCollection()->where('key', $key)->first();
 
 		// If we have a cache record we will check the expiration time against current
 		// time on the system and see if the record has expired. If it has, we will
@@ -73,7 +73,8 @@ class MongodbStore implements StoreInterface {
 				return $this->forget($key);
 			}
 
-			return $this->encrypter->decrypt($cache['value']);
+			//return $this->encrypter->decrypt($cache['value']);
+			return $cache['value'];
 		}
 	}
 
@@ -92,21 +93,21 @@ class MongodbStore implements StoreInterface {
 		// All of the cached values in the database are encrypted in case this is used
 		// as a session data store by the consumer. We'll also calculate the expire
 		// time and place that on the table so we will check it on our retrieval.
-		$value = $this->encrypter->encrypt($value);
+		//$value = $this->encrypter->encrypt($value);
 
 		$expiration = new \MongoDate($this->getTime() + ($minutes * 60));
 
-		$item = $this->collection()->where('key', $key)->first();
+		$data = array('expiration' => $expiration, 'key' => $key, 'value' => $value);
+
+		$item = $this->getCacheCollection()->where('key', $key)->first();
 
 		if(is_null($item))
 		{
-			$this->collection()->insert(compact('key', 'value', 'expiration'));
+			$this->getCacheCollection()->insert($data);
 		}
 		else
 		{
-			$update_data = array('value' => $value, 'expiration' => $expiration);
-
-			$this->collection()->update(array('key' => $key), array('$set' => $update_data));
+			$this->getCacheCollection()->where('key', $key)->update($data);
 		}
 	}
 
@@ -168,7 +169,12 @@ class MongodbStore implements StoreInterface {
 	 */
 	public function forget($key)
 	{
-		$this->collection()->remove(array('key' => $this->prefix.$key));
+		$item = $this->getCacheCollection()->where('key', $key)->first();
+
+		if(!is_null($item))
+		{
+			$this->getCacheCollection()->where('key', $key)->delete();
+		}
 	}
 
 	/**
@@ -178,17 +184,8 @@ class MongodbStore implements StoreInterface {
 	 */
 	public function flush()
 	{
-		$this->collection()->drop();
-	}
-
-	/**
-	 * Get a MongoCollection.
-	 *
-	 * @return MongoCollection
-	 */
-	protected function collection()
-	{
-		return $this->connection->collection($this->collection);
+		$mongo_collection = $this->connection->getCollection($this->collection_name);
+		$mongo_collection->drop();
 	}
 
 	/**
@@ -221,4 +218,13 @@ class MongodbStore implements StoreInterface {
 		return $this->prefix;
 	}
 
+	/**
+	 * Get the collection.
+	 *
+	 * @return QueryBuilder
+	 */
+	protected function getCacheCollection()
+	{
+		return $this->connection->collection($this->collection_name);
+	}
 }
