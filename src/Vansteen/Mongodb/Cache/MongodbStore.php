@@ -73,8 +73,7 @@ class MongodbStore implements StoreInterface {
 				return $this->forget($key);
 			}
 
-			//return $this->encrypter->decrypt($cache['value']);
-			return $cache['value'];
+			return $this->encrypter->decrypt($cache['value']);
 		}
 	}
 
