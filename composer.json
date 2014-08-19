@@ -18,7 +18,7 @@
             "Vansteen\\Mongodb\\Cache": "src/"
         }
     },
-    "minimum-stability": "alpha",
+    "minimum-stability": "stable",
     "suggest": {
         "jenssegers/mongodb-session": "Add MongoDB session support to Laravel-MongoDB",
         "jenssegers/mongodb-sentry": "Add Sentry support to Laravel-MongoDB"
