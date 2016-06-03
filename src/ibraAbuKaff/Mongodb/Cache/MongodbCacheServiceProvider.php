@@ -1,4 +1,4 @@
-<?php namespace Vansteen\Mongodb\Cache;
+<?php namespace ibraAbuKaff\Mongodb\Cache;
 
 use Illuminate\Support\ServiceProvider;
 

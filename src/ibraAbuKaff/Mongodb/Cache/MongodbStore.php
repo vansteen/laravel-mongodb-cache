@@ -1,5 +1,5 @@
 <?php
-namespace Vansteen\Mongodb\Cache;
+namespace ibraAbuKaff\Mongodb\Cache;
 
 use Jenssegers\Mongodb\Connection;
 use Illuminate\Contracts\Cache\Store as StoreInterface;
