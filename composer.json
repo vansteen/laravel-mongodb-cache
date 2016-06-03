@@ -1,26 +1,32 @@
 {
-    "name": "vansteen/laravel-mongodb-cache",
-    "description": "A MongoDB cache driver for Laravel 4 using the Laravel MongoDB package jenssegers/mongodb",
-    "keywords": ["laravel","cache","mongodb","mongo","driver"],
-    "authors": [
-        {
-            "name": "Thomas Van Steenwinckel",
-            "email": "tom@vansteen.me"
-        }
-    ],
-    "license" : "MIT",
-    "require": {
-        "php": ">=5.4.0",
-        "jenssegers/mongodb": "*"
-    },
-    "autoload": {
-        "psr-0": {
-            "Vansteen\\Mongodb\\Cache": "src/"
-        }
-    },
-    "minimum-stability": "stable",
-    "suggest": {
-        "jenssegers/mongodb-session": "Add MongoDB session support to Laravel-MongoDB",
-        "jenssegers/mongodb-sentry": "Add Sentry support to Laravel-MongoDB"
+  "name": "ibraAbuKaff/laravel-mongodb-cache",
+  "description": "A MongoDB cache driver for Laravel 4 using the Laravel MongoDB package jenssegers/mongodb",
+  "keywords": [
+    "laravel",
+    "cache",
+    "mongodb",
+    "mongo",
+    "driver"
+  ],
+  "authors": [
+    {
+      "name": "Ibraheem Z. Abu- Kaff",
+      "email": "eng.ibraheemabukaff@gmail.com"
     }
+  ],
+  "license": "MIT",
+  "require": {
+    "php": ">=5.4.0",
+    "jenssegers/mongodb": "*"
+  },
+  "autoload": {
+    "psr-0": {
+      "ibraAbuKaff\\Mongodb\\Cache": "src/"
+    }
+  },
+  "minimum-stability": "stable",
+  "suggest": {
+    "jenssegers/mongodb-session": "Add MongoDB session support to Laravel-MongoDB",
+    "jenssegers/mongodb-sentry": "Add Sentry support to Laravel-MongoDB"
+  }
 }

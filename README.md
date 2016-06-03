@@ -17,15 +17,22 @@ Add the package to your `composer.json` and run `composer update`.
 ```php
 {
   "require": {
-    "vansteen/laravel-mongodb-cache": "dev-master"
+    "ibraAbuKaff/laravel-mongodb-cache": "dev-master"
   }
+  "repositories": [
+      {
+        "url": "https://github.com/ibraAbuKaff/laravel-mongodb-cache.git",
+        "type": "git"
+      }
+    ]
 }
+
 ```
 
 Add the cache service provider in `app/config/app.php`:
 
 ```php
-    'Vansteen\Mongodb\Cache\MongodbCacheServiceProvider',
+    'ibraAbuKaff\Mongodb\Cache\MongodbCacheServiceProvider',
 ```
 
 Change the cache driver in `app/config/cache.php` to mongodb:
